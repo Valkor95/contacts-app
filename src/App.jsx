@@ -1,6 +1,7 @@
 import './App.css'
 import ContactsList from "./Components/ContactsList.jsx";
 import {Container} from "@mui/material";
+import ContactForm from "./Components/ContactForm.jsx";
 
 function App() {
 
@@ -8,6 +9,7 @@ function App() {
     <>
         <Container sx={{mt:1}}>
             <ContactsList/>
+            <ContactForm/>
         </Container>
 
     </>

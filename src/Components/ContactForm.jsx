@@ -28,7 +28,7 @@ function ContactForm() {
             <form action={action}>
                 <Stack spacing={2}>
                     <TextField label="Name" name="name" defaultValue={state.name} required/>
-                    <TextField label="" name="phone" defaultValue={state.phone} required/>
+                    <TextField label="Phone" name="phone" defaultValue={state.phone} required/>
                     <TextField select label="" name="category" defaultValue={state.category}>
                         <MenuItem value="Personal">Personal</MenuItem>
                         <MenuItem value="Work">Work</MenuItem>
