@@ -13,11 +13,9 @@ const contactSlice = createSlice({
         },
         editContact: (state, action) => {
             const {id, name, phone, category} = action.payload;
-            const contact = state.contacts.find((c) => c.id === id);
-            if(contact){
-                contact.name = name;
-                contact.phone = phone;
-                contact.category = category;
+            const index = state.contacts.findIndex((c) => c.id === id);
+            if(index !== -1){
+                state.contacts[index] = {...state.contacts[index], name, phone, category}
             }
         },
         deleteContact: (state, action) => {
