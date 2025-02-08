@@ -1,7 +1,9 @@
 import {useSelector} from "react-redux";
-import {List, Typography} from "@mui/material";
+import {List, Paper, Stack, Typography} from "@mui/material";
 import ContactItem from "./ContactItem.jsx";
 import {useState} from "react";
+import SearchBar from "./SearchBar.jsx";
+import FilterByCategory from "./FilterByCategory.jsx";
 
 function ContactsList() {
     const contacts = useSelector((state) => state.contacts.contacts)
@@ -16,20 +18,25 @@ function ContactsList() {
     })
 
     return (
-        <>
+        <Paper sx={{p: 2, mb: 2}}>
             <Typography variant="h2" gutterBottom>
                 Contact list
             </Typography>
-            {contacts.length === 0 ? (
-                <Typography variant="body1">No contacts</Typography>
+
+            <Stack spacing={2} sx={{mb: 2}}>
+                <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+                <FilterByCategory category={category} setCategory={setCategory}/>
+            </Stack>
+            {filteredContacts.length === 0 ? (
+                <Typography variant="body1">No contacts found</Typography>
             ) : (
                 <List>
-                    {contacts.map((contact) => (
+                    {filteredContacts.map((contact) => (
                         <ContactItem key={contact.id} contact={contact}/>
                     ))}
                 </List>
             )}
-        </>
+        </Paper>
     );
 }
 
