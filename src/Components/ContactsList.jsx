@@ -1,5 +1,5 @@
 import {useSelector} from "react-redux";
-import {List, Paper, Stack, Typography} from "@mui/material";
+import {Button, List, Paper, Stack, Typography} from "@mui/material";
 import ContactItem from "./ContactItem.jsx";
 import {useState} from "react";
 import SearchBar from "./SearchBar.jsx";
@@ -9,6 +9,11 @@ function ContactsList() {
     const contacts = useSelector((state) => state.contacts.contacts)
     const [searchTerm, setSearchTerm] = useState("");
     const [category, setCategory] = useState("All")
+
+    const handleReset = () => {
+        setSearchTerm("");
+        setCategory("All");
+    }
 
     const filteredContacts = contacts.filter((contact) => {
         const matchesSearch = contact.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -26,6 +31,9 @@ function ContactsList() {
             <Stack spacing={2} sx={{mb: 2}}>
                 <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
                 <FilterByCategory category={category} setCategory={setCategory}/>
+                <Button variant="outlined" onClick={handleReset}>
+                    Reset
+                </Button>
             </Stack>
             {filteredContacts.length === 0 ? (
                 <Typography variant="body1">No contacts found</Typography>
