@@ -1,18 +1,30 @@
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
-import {closeEditModal} from "../../store/slice/contactSlice.js";
+import {closeEditModal, editContact} from "../../store/slice/contactSlice.js";
 import {useFormState} from "react-dom";
+import {green} from "@mui/material/colors";
 
 
 
 function EditContactModal() {
     const dispatch = useDispatch()
     const {openEditModal, contactToEdit} = useSelector((state) => state.contacts)
-
-    const initialState = {...contactToEdit}
+    const successEdit = false;
+    const initialState = {...contactToEdit, error: ""}
 
     const formAction = (prevState, formData) => {
+        const name = formData.get("name");
+        const phone = formData.get("phone");
+        const category = formData.get("category")
 
+        if (!name || !phone) return {...prevState, error: "Form is empty! All fields are required!"}
+
+        dispatch(editContact({...contactToEdit, name, phone, category}));
+        successEdit = true;
+
+        setTimeout(function (){
+            dispatch(closeEditModal())
+        }, 5000)
     }
 
     const [state, action] = useFormState(formAction, initialState)
@@ -41,6 +53,8 @@ function EditContactModal() {
                 <Button type="submit" color="success">
                     Save
                 </Button>
+                {successEdit && <span style={{color: "green"}}>Edit is completed!</span>}
+                {state.error && <span style={{color: "red"}}>{state.error}</span>}
             </DialogActions>
         </Dialog>
     );
