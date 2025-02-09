@@ -2,6 +2,8 @@ import {createSlice} from "@reduxjs/toolkit";
 
 const initialState = {
     contacts: [],
+    openEditModal: false,
+    contactToEdit: null,
 };
 
 const contactSlice = createSlice({
@@ -21,8 +23,16 @@ const contactSlice = createSlice({
         deleteContact: (state, action) => {
             state.contacts = state.contacts.filter((c) => c.id !== action.payload);
         },
+        openEditModal: (state, action) => {
+            state.openEditModal = true;
+            state.contactToEdit = action.payload;
+        },
+        closeEditModal: (state) => {
+            state.openEditModal = false;
+            state.contactToEdit = null;
+        }
     },
 });
 
-export const {addContact, editContact, deleteContact} = contactSlice.actions;
+export const {addContact, editContact, deleteContact, openEditModal, closeEditModal} = contactSlice.actions;
 export default contactSlice.reducer;
