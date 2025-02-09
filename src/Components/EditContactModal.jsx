@@ -2,14 +2,14 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Sta
 import {useDispatch, useSelector} from "react-redux";
 import {closeEditModal, editContact} from "../../store/slice/contactSlice.js";
 import {useFormState} from "react-dom";
-import {green} from "@mui/material/colors";
+import {useState} from "react";
 
 
 
 function EditContactModal() {
     const dispatch = useDispatch()
     const {openEditModal, contactToEdit} = useSelector((state) => state.contacts)
-    const successEdit = false;
+    const [successEdit, setSuccessEdit] = useState(false);
     const initialState = {...contactToEdit, error: ""}
 
     const formAction = (prevState, formData) => {
@@ -19,22 +19,28 @@ function EditContactModal() {
 
         if (!name || !phone) return {...prevState, error: "Form is empty! All fields are required!"}
 
-        dispatch(editContact({...contactToEdit, name, phone, category}));
-        successEdit = true;
+        const updatedContact = {...contactToEdit, name, phone, category}
+
+        dispatch(editContact(updatedContact));
+
+        setSuccessEdit(true);
 
         setTimeout(function (){
             dispatch(closeEditModal())
         }, 5000)
+
+        return updatedContact;
     }
 
     const [state, action] = useFormState(formAction, initialState)
     return (
         <Dialog open={openEditModal} onClose={() => dispatch(closeEditModal())}>
-            <DialogTitle>
-                EDIT THIS CONTACT
-            </DialogTitle>
-            <DialogContent>
-                <form action={action}>
+            <form action={action}>
+                <DialogTitle>
+                    EDIT THIS CONTACT
+                </DialogTitle>
+                <DialogContent>
+
                     <Stack spacing={2} sx={{mt: 1}}>
                         <TextField label="Name" name="name" defaultValue={contactToEdit.name} required/>
                         <TextField label="Phone" name="phone" defaultValue={contactToEdit.phone} required/>
@@ -44,18 +50,18 @@ function EditContactModal() {
                             <MenuItem value="Family">Family</MenuItem>
                         </TextField>
                     </Stack>
-                </form>
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={() => dispatch(closeEditModal())} color="secondary">
-                    Cancel
-                </Button>
-                <Button type="submit" color="success">
-                    Save
-                </Button>
-                {successEdit && <span style={{color: "green"}}>Edit is completed!</span>}
-                {state.error && <span style={{color: "red"}}>{state.error}</span>}
-            </DialogActions>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={() => dispatch(closeEditModal())} color="secondary">
+                        Cancel
+                    </Button>
+                    <Button type="submit" color="success">
+                        Save
+                    </Button>
+                    {successEdit && <span style={{color: "green"}}>Edit is completed!</span>}
+                    {state?.error && <span style={{color: "red"}}>{state.error}</span>}
+                </DialogActions>
+            </form>
         </Dialog>
     );
 }
