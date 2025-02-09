@@ -1,4 +1,4 @@
-import {Dialog, DialogContent, DialogTitle, MenuItem, Stack, TextField} from "@mui/material";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {closeEditModal} from "../../store/slice/contactSlice.js";
 import {useFormState} from "react-dom";
@@ -34,6 +34,14 @@ function EditContactModal() {
                     </Stack>
                 </form>
             </DialogContent>
+            <DialogActions>
+                <Button onClick={() => dispatch(closeEditModal())} color="secondary">
+                    Cancel
+                </Button>
+                <Button type="submit" color="success">
+                    Save
+                </Button>
+            </DialogActions>
         </Dialog>
     );
 }
