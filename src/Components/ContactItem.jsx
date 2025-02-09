@@ -1,10 +1,14 @@
 import {useDispatch} from "react-redux";
 import {Button, Card, CardContent, Stack, Typography} from "@mui/material";
-import {deleteContact} from "../../store/slice/contactSlice.js";
+import {deleteContact, openEditModal} from "../../store/slice/contactSlice.js";
 
 // eslint-disable-next-line react/prop-types
 function ContactItem({contact}) {
     const dispatch = useDispatch()
+
+    const handleEdit = () => {
+        dispatch(openEditModal(contact))
+    }
 
     return (
         <Card sx={{mb: 2, p: 1}}>
@@ -19,6 +23,13 @@ function ContactItem({contact}) {
                         onClick={() => dispatch(deleteContact(contact.id))}
                     >
                         Delete
+                    </Button>
+                    <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={handleEdit}
+                    >
+                        Edit
                     </Button>
                 </Stack>
             </CardContent>
