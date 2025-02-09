@@ -2,14 +2,13 @@ import {Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Sta
 import {useDispatch, useSelector} from "react-redux";
 import {closeEditModal, editContact} from "../../store/slice/contactSlice.js";
 import {useFormState} from "react-dom";
-import {useState} from "react";
 
 
 
 function EditContactModal() {
     const dispatch = useDispatch()
     const {openEditModal, contactToEdit} = useSelector((state) => state.contacts)
-    const [successEdit, setSuccessEdit] = useState(false);
+
     const initialState = {...contactToEdit, error: ""}
 
     const formAction = (prevState, formData) => {
@@ -23,13 +22,8 @@ function EditContactModal() {
 
         dispatch(editContact(updatedContact));
 
-        setSuccessEdit(true);
+        dispatch(closeEditModal())
 
-        setTimeout(function (){
-            dispatch(closeEditModal())
-        }, 5000)
-
-        return updatedContact;
     }
 
     const [state, action] = useFormState(formAction, initialState)
@@ -58,7 +52,6 @@ function EditContactModal() {
                     <Button type="submit" color="success">
                         Save
                     </Button>
-                    {successEdit && <span style={{color: "green"}}>Edit is completed!</span>}
                     {state?.error && <span style={{color: "red"}}>{state.error}</span>}
                 </DialogActions>
             </form>
