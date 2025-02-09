@@ -1,9 +1,20 @@
+import {Dialog, DialogContent, DialogTitle} from "@mui/material";
+import {useDispatch, useSelector} from "react-redux";
+import {closeEditModal} from "../../store/slice/contactSlice.js";
 
 function EditContactModal() {
-    return (
-        <div>
+    const dispatch = useDispatch()
+    const {openEditModal, contactToEdit} = useSelector((state) => state.contacts)
 
-        </div>
+    return (
+        <Dialog open={openEditModal} onClose={() => dispatch(closeEditModal())}>
+            <DialogTitle>
+                EDIT THIS CONTACT
+            </DialogTitle>
+            <DialogContent>
+
+            </DialogContent>
+        </Dialog>
     );
 }
 
