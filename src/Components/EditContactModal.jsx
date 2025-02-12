@@ -1,14 +1,25 @@
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, MenuItem, Stack, TextField} from "@mui/material";
+import {
+    Button,
+    CircularProgress,
+    Dialog,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    MenuItem,
+    Stack,
+    TextField
+} from "@mui/material";
 import {useDispatch, useSelector} from "react-redux";
 import {closeEditModal, editContact} from "../../store/slice/contactSlice.js";
 import {useFormState} from "react-dom";
+import {useState} from "react";
 
 
 
 function EditContactModal() {
     const dispatch = useDispatch()
     const {openEditModal, contactToEdit} = useSelector((state) => state.contacts)
-
+    const [loading, setLoading] = useState(false)
     const initialState = {...contactToEdit, error: ""}
 
     const formAction = (prevState, formData) => {
@@ -20,16 +31,22 @@ function EditContactModal() {
 
         const updatedContact = {...contactToEdit, name, phone, category}
 
+        setLoading(true);
         dispatch(editContact(updatedContact));
 
-        dispatch(closeEditModal())
+        setTimeout(() => {
+            dispatch(closeEditModal())
+        }, 2000)
 
+        return updatedContact
     }
 
     const [state, action] = useFormState(formAction, initialState)
+
     return (
         <Dialog open={openEditModal} onClose={() => dispatch(closeEditModal())}>
-            <form action={action}>
+            { loading ? (<CircularProgress size={24} sx={{color: "green", padding: "100%"}}/>) :
+                (<form action={action}>
                 <DialogTitle>
                     EDIT THIS CONTACT
                 </DialogTitle>
@@ -50,11 +67,11 @@ function EditContactModal() {
                         Cancel
                     </Button>
                     <Button type="submit" color="success">
-                        Save
+                       Save
                     </Button>
                     {state?.error && <span style={{color: "red"}}>{state.error}</span>}
                 </DialogActions>
-            </form>
+            </form>)}
         </Dialog>
     );
 }
