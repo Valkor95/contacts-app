@@ -33,9 +33,10 @@ function EditContactModal({setSuccessEdit}) {
 
         setLoading(true);
         dispatch(editContact(updatedContact));
-        setSuccessEdit
+
 
         setTimeout(() => {
+            setSuccessEdit(true)
             dispatch(closeEditModal())
         }, 2000)
 

@@ -1,10 +1,11 @@
 import './App.css'
 import ContactsList from "./Components/ContactsList.jsx";
-import {Container, Snackbar} from "@mui/material";
+import {Container} from "@mui/material";
 import ContactForm from "./Components/ContactForm.jsx";
 import {useSelector} from "react-redux";
 import EditContactModal from "./Components/EditContactModal.jsx";
 import {useState} from "react";
+import MySnackBar from "./Components/MySnackBar.jsx";
 
 function App() {
     const [successEdit, setSuccessEdit] = useState(false)
@@ -16,8 +17,8 @@ function App() {
             <ContactsList/>
             <ContactForm/>
         </Container>
-        {openEditModal && <EditContactModal setSuccessEdit={() => setSuccessEdit(true)}/>}
-        {!openEditModal && successEdit && <Snackbar successEdit={successEdit} setSuccessClose={() => setSuccessEdit(false)}/>}
+        {openEditModal && <EditContactModal setSuccessEdit={setSuccessEdit}/>}
+        {!openEditModal && successEdit && <MySnackBar successEdit={successEdit} setSuccessClose={setSuccessEdit}/>}
     </>
   )
 }

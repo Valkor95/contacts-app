@@ -6,9 +6,9 @@ function MySnackBar({successEdit, setSuccessClose}) {
         <Snackbar
             open={successEdit}
             autoHideDuration={3000}
-            onClose={setSuccessClose}
+            onClose={() => setSuccessClose(false)}
             message="Contact updated successfully!"
-            anchorOrigin={{vertical: "bottom", horizontal: "right"}}
+            anchorOrigin={{vertical: "top", horizontal: "right"}}
         />
     );
 }
