@@ -5,7 +5,7 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
-    MenuItem,
+    MenuItem, Snackbar,
     Stack,
     TextField
 } from "@mui/material";
@@ -34,9 +34,10 @@ function EditContactModal() {
 
         setLoading(true);
         dispatch(editContact(updatedContact));
+        setSnackbarOpen(true)
 
         setTimeout(() => {
-            setSnackbarOpen(true)
+
             dispatch(closeEditModal())
         }, 2000)
 
@@ -46,36 +47,47 @@ function EditContactModal() {
     const [state, action] = useFormState(formAction, initialState)
 
     return (
-        <Dialog open={openEditModal} onClose={() => dispatch(closeEditModal())}>
-            <DialogContent sx={{minHeight: 200, minWidth: 200, display: "flex", alignItems: "center", justifyContent: "center"}}>
-            { loading ? (<CircularProgress size={70} sx={{color: "green"}}/>) :
-                (<form action={action} style={{width: "100%"}}>
-                <DialogTitle textAlign="center">
-                    EDIT THIS CONTACT
-                </DialogTitle>
+        <>
+            <Dialog open={openEditModal} onClose={() => dispatch(closeEditModal())}>
+                <DialogContent sx={{minHeight: 200, minWidth: 200, display: "flex", alignItems: "center", justifyContent: "center"}}>
+                    { loading ? (<CircularProgress size={70} sx={{color: "green"}}/>) :
+                        (<form action={action} style={{width: "100%"}}>
+                            <DialogTitle textAlign="center">
+                                EDIT THIS CONTACT
+                            </DialogTitle>
 
-                    <Stack spacing={2} sx={{mt: 1}}>
-                        <TextField label="Name" name="name" defaultValue={contactToEdit.name} required/>
-                        <TextField label="Phone" name="phone" defaultValue={contactToEdit.phone} required/>
-                        <TextField select label="Category" name="category" defaultValue={contactToEdit.category}>
-                            <MenuItem value="Personal">Personal</MenuItem>
-                            <MenuItem value="Work">Work</MenuItem>
-                            <MenuItem value="Family">Family</MenuItem>
-                        </TextField>
-                    </Stack>
+                            <Stack spacing={2} sx={{mt: 1}}>
+                                <TextField label="Name" name="name" defaultValue={contactToEdit.name} required/>
+                                <TextField label="Phone" name="phone" defaultValue={contactToEdit.phone} required/>
+                                <TextField select label="Category" name="category" defaultValue={contactToEdit.category}>
+                                    <MenuItem value="Personal">Personal</MenuItem>
+                                    <MenuItem value="Work">Work</MenuItem>
+                                    <MenuItem value="Family">Family</MenuItem>
+                                </TextField>
+                            </Stack>
 
-                <DialogActions sx={{ mt: 2 }}>
-                    <Button onClick={() => dispatch(closeEditModal())} color="secondary">
-                        Cancel
-                    </Button>
-                    <Button type="submit" color="success">
-                       Save
-                    </Button>
-                    {state?.error && <span style={{color: "red", display: "block", textAlign: "center" }}>{state.error}</span>}
-                </DialogActions>
-            </form>)}
-            </DialogContent>
-        </Dialog>
+                            <DialogActions sx={{ mt: 2 }}>
+                                <Button onClick={() => dispatch(closeEditModal())} color="secondary">
+                                    Cancel
+                                </Button>
+                                <Button type="submit" color="success">
+                                    Save
+                                </Button>
+                                {state?.error && <span style={{color: "red", display: "block", textAlign: "center" }}>{state.error}</span>}
+                            </DialogActions>
+                        </form>)}
+                </DialogContent>
+            </Dialog>
+
+            <Snackbar
+                open={snackbarOpen}
+                autoHideDuration={2000}
+                onClose={() => setSnackbarOpen(false)}
+                message="Contact updated successfully!"
+                anchorOrigin={{vertical: "bottom", horizontal: "right"}}
+            />
+        </>
+
     );
 }
 
