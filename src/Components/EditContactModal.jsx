@@ -16,11 +16,10 @@ import {useState} from "react";
 
 
 
-function EditContactModal() {
+function EditContactModal({setSuccessEdit}) {
     const dispatch = useDispatch()
     const {openEditModal, contactToEdit} = useSelector((state) => state.contacts)
     const [loading, setLoading] = useState(false);
-    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const initialState = {...contactToEdit, error: ""}
 
     const formAction = (prevState, formData) => {
@@ -34,10 +33,9 @@ function EditContactModal() {
 
         setLoading(true);
         dispatch(editContact(updatedContact));
-        setSnackbarOpen(true)
+        setSuccessEdit
 
         setTimeout(() => {
-
             dispatch(closeEditModal())
         }, 2000)
 
@@ -79,13 +77,6 @@ function EditContactModal() {
                 </DialogContent>
             </Dialog>
 
-            <Snackbar
-                open={snackbarOpen}
-                autoHideDuration={2000}
-                onClose={() => setSnackbarOpen(false)}
-                message="Contact updated successfully!"
-                anchorOrigin={{vertical: "bottom", horizontal: "right"}}
-            />
         </>
 
     );
