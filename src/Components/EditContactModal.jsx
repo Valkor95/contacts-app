@@ -19,7 +19,8 @@ import {useState} from "react";
 function EditContactModal() {
     const dispatch = useDispatch()
     const {openEditModal, contactToEdit} = useSelector((state) => state.contacts)
-    const [loading, setLoading] = useState(false)
+    const [loading, setLoading] = useState(false);
+    const [snackbarOpen, setSnackbarOpen] = useState(false);
     const initialState = {...contactToEdit, error: ""}
 
     const formAction = (prevState, formData) => {
@@ -35,6 +36,7 @@ function EditContactModal() {
         dispatch(editContact(updatedContact));
 
         setTimeout(() => {
+            setSnackbarOpen(true)
             dispatch(closeEditModal())
         }, 2000)
 
